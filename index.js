@@ -1,17 +1,19 @@
 // Add Express
 const express = require("express");
+const path = require("path");
 
 // Initialize Express
 const app = express();
 
-// Create GET request
+// Serve the stopwatch.html file
 app.get("/", (req, res) => {
-    res.send("Express on Vercel");
+    res.sendFile(path.join(__dirname, "stopwatch.html"));
 });
 
 // Initialize server
-app.listen(5000, () => {
-    console.log("Running on port 5000.");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}.`);
 });
 
 module.exports = app;

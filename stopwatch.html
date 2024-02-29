@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-family: Bahnschrift, serif;
+            background: #f0f0f3;
+        }
+
+        .timerBtn {
+            border-radius: 12px;
+            background-color: #2a3430;
+            color: white;
+            cursor: pointer;
+            font-size: 1em;
+            padding: 10px;
+            margin: 0.3em;
+        }
+
+        #timeDisplay {
+            font-size: 8em;
+            color: #2a3430;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<div id="timeContainer">
+    <div id="timeDisplay">0:0:0</div>
+    <button id="startBtn" class="timerBtn">START</button>
+    <button id="pauseBtn" class="timerBtn">PAUSE</button>
+    <button id="resetBtn" class="timerBtn">RESET</button>
+</div>
+
+
+<script>
+    const timeDisplay = document.getElementById("timeDisplay");
+    const startBtn = document.getElementById("startBtn")
+    const pauseBtn = document.getElementById("pauseBtn")
+    const resetBtn = document.getElementById("resetBtn")
+
+    let startTime = 0;
+    let elapsedTime = 0;
+    let paused = true;
+    let intervalId;
+    let hrs = 0;
+    let mins = 0;
+    let secs = 0;
+
+    startBtn.addEventListener("click", () => {
+        if (paused) {
+            paused = false;
+            startTime = performance.now() - elapsedTime;
+            intervalId = setInterval(updateTime, 1000)
+        }
+    });
+    pauseBtn.addEventListener("click", () => {
+        if (!paused) {
+            paused = true;
+            elapsedTime = performance.now() - startTime;
+            clearInterval(intervalId);
+        }
+    });
+    resetBtn.addEventListener("click", () => {
+        paused = true;
+        clearInterval(intervalId);
+        startTime = 0;
+        elapsedTime = 0;
+        hrs = 0;
+        mins = 0;
+        secs = 0;
+        timeDisplay.textContent = "00:00:00"
+    });
+
+    function updateTime() {
+        elapsedTime = performance.now() - startTime;
+        secs = Math.floor((elapsedTime / 1000) % 60);
+        mins = Math.floor((elapsedTime / (1000 * 60)) % 60);
+        hrs = Math.floor((elapsedTime / (1000 * 60 * 60)) % 24);
+        timeDisplay.textContent = `${hrs}:${mins}:${secs}`;
+    }
+
+
+</script>
+
+</body>
+</html>
